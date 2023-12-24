@@ -1,17 +1,52 @@
 <script setup>
-// const { data } = await useFetch("/api/hello");
+// Data
+const produtos = ref([]);
 
-const queryAll = useColl(`produtos`);
+const queryCollection = useColl(`produtos`);
+const querySnapshot = await getDocs(queryCollection);
 
-const querySnapshot = await getDocs(queryAll);
+// 🚀 Actions
+function getProducts() {
+  querySnapshot.docs.forEach((doc) => {
+    produtos.value.push({ ...doc.data(), amount: 0 });
+  });
+}
 
-const produtos = querySnapshot.docs.map((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-  // doc.id, " => ", doc.data();
-  return doc.data();
+function changeAmountItem(product, action) {
+  if (action === "increase") {
+    product.amount++;
+  } else if (action === "decrease" && product.amount > 0) {
+    product.amount--;
+  }
+  // chamar função calcular total
+  calcTotal();
+}
+
+function calcTotal() {
+  console.log("calcular total");
+}
+
+// 🔄 Lifeciycle
+onMounted(() => {
+  getProducts();
 });
 </script>
 
 <template>
-  <pre>{{ produtos }}</pre>
+  <div>{{ produtos }}</div>
+  <div v-for="(produto, index) in produtos" :key="index">
+    <h2>{{ produto.nome }}</h2>
+    <p>{{ produto.descricao }}</p>
+    <p>{{ produto.valor }}</p>
+    <b>
+      quantidade:
+      {{ produto.amount }}
+    </b>
+
+    <button @click="changeAmountItem(produto, 'increase')">+</button>
+    <button @click="changeAmountItem(produto, 'decrease')">-</button>
+  </div>
 </template>
+
+<style scoped>
+</style>
