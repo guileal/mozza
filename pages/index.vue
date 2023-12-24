@@ -21,9 +21,18 @@ function changeAmountItem(product, action) {
   // chamar função calcular total
   calcTotal();
 }
+const totalSum = ref(0);
 
 function calcTotal() {
-  console.log("calcular total");
+  let total = 0;
+
+  produtos.value.forEach((produto) => {
+    if (produto.valor && produto.amount) {
+      total += Number(produto.valor) * Number(produto.amount);
+    }
+  });
+
+  totalSum.value = total;
 }
 
 // 🔄 Lifeciycle
@@ -46,6 +55,7 @@ onMounted(() => {
     <button @click="changeAmountItem(produto, 'increase')">+</button>
     <button @click="changeAmountItem(produto, 'decrease')">-</button>
   </div>
+  <h2>total {{ totalSum }}</h2>
 </template>
 
 <style scoped>
