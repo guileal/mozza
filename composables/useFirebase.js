@@ -10,6 +10,7 @@ import {
   query,
   onSnapshot,
   where,
+  addDoc,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,7 +32,16 @@ const db = getFirestore(app);
 // 🟡 Functions
 const useDoc = (path) => doc(db, path);
 const useColl = (path) => collection(db, path);
+const createDoc = async (collection, data) => {
+  console.log("Firebase: createDoc()");
+  try {
+    await setDoc(doc(db, collection, "todo:uid"), data);
+    console.log("Firebase: Documento Criado");
+  } catch (error) {
+    console.log("Firebase: Erro ao criar documento", error);
+    throw error;
+  }
+};
 
 // const queryFiltered = query(useColl(`products`), where("tipo", "==", "pizza"));
-
-export { useDoc, useColl, query, onSnapshot, getDocs };
+export { useDoc, useColl, query, onSnapshot, createDoc };
