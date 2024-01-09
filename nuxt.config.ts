@@ -5,5 +5,6 @@ export default defineNuxtConfig({
     public: {
       apiKey: process.env.FIRE_API_KEY,
     }
-  }
+  },
+  css: ["@/assets/sass/style.sass"],
 })

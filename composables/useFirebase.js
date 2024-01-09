@@ -44,4 +44,4 @@ const createDoc = async (collection, data) => {
 };
 
 // const queryFiltered = query(useColl(`products`), where("tipo", "==", "pizza"));
-export { useDoc, useColl, query, onSnapshot, createDoc };
+export { useDoc, useColl, query, onSnapshot, createDoc, getDocs };
